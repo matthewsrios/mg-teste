@@ -25,5 +25,7 @@ describe('Test', () => {
 
         it('Square test', () => {
             cy.get('.square').click({ release: false })
+
+            //TODO: checar dimensao do quadrado
         })
 })
