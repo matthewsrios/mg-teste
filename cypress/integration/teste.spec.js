@@ -16,7 +16,6 @@ describe('Test', () => {
                 .its('body')
                 .then(html => {
                     cy.document().then(document => {
-                        console.log(html)
                         document.write(html)
                         document.close()
                     })
