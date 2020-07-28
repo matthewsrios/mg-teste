@@ -1,31 +1,21 @@
 /// <reference types="cypress" />
+const url = 'https://codepen.io/choskim/full/RLYebL'
 
 describe('Test', () => {
-        const url = 'https://codepen.io/choskim/full/RLYebL';
-        const iframeUrl = 'https://s.codepen.io/choskim/fullpage/RLYebL';
-
-        beforeEach(() => {
-            cy.request({
-                method: 'GET',
-                url: iframeUrl,
-                headers: {
-                    Referer: url,
-                    accept: 'text/html',
-                }
+    it('Square test', () => {
+        cy.visit(url)
+        cy.get('iframe#result')
+            .then($iframe => {
+                const $body = $iframe.contents().find('body')
+                return cy.wrap($body)
             })
-                .its('body')
-                .then(html => {
-                    cy.document().then(document => {
-                        document.write(html)
-                        document.close()
-                    })
-                })
-            cy.get('.center-center').should('be.visible')
-        })
+            .then(body => {
+                cy.wrap(body).should('be.visible')
+                cy.wrap(body).find('.square').trigger('mousedown', {button: 0})
+                cy.wait(5000)
+                cy.wrap(body).find('.square').trigger('mouseleave')
 
-        it('Square test', () => {
-            cy.get('.square').click({ release: false })
-
-            //TODO: checar dimensao do quadrado
-        })
+                //TODO: checar dimensao do quadrado
+            })
+    })
 })
