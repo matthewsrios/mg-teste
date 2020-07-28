@@ -7,15 +7,19 @@ describe('Test', () => {
         cy.get('iframe#result')
             .then($iframe => {
                 const $body = $iframe.contents().find('body')
-                return cy.wrap($body)
+                return cy.wrap($body).find('.square')
             })
-            .then(body => {
-                cy.wrap(body).should('be.visible')
-                cy.wrap(body).find('.square').trigger('mousedown', {button: 0})
+            .then(square => {
+                cy.wrap(square).should('be.visible')
+                cy.wrap(square).trigger('pointerdown', { button: 0 })
                 cy.wait(5000)
-                cy.wrap(body).find('.square').trigger('mouseleave')
+                cy.wrap(square).trigger('pointerleave')
 
-                //TODO: checar dimensao do quadrado
+                cy.wrap(square)
+                    .then(($el) => {
+                        expect($el[0].getBoundingClientRect().width).to.be.greaterThan(224)
+                        expect($el[0].getBoundingClientRect().height).to.be.greaterThan(224)
+                    })
             })
     })
 })
